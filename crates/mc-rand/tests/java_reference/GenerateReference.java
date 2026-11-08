@@ -54,3 +54,4 @@ public class GenerateReference {
         System.out.println("Reference outputs written to: " + outputFile);
     }
 }
+

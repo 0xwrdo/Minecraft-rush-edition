@@ -23,3 +23,4 @@ Write-Host "Running GenerateReference..."
 Remove-Item -Path (Join-Path $scriptDir "GenerateReference.class") -Force -ErrorAction SilentlyContinue
 
 Write-Host "Done! Generated $outputFile"
+
