@@ -1,14 +1,32 @@
-pub fn add(left: u64, right: u64) -> u64 {
-    left + right
-}
+//! mc-game: Minecraft 1.0 gameplay, physics, and interaction simulation.
+//!
+//! Has NO graphics dependencies and runs entirely headless.
+//!
+//! Features:
+//! - Player AABB (0.6 x 1.8), eye height (1.62).
+//! - Swept AABB collision resolution per axis with 0.5-block step-up.
+//! - Gravity, drag, ground friction (including ice), and fall damage.
+//! - Swimming in fluids and ladder climbing.
+//! - 3D DDA voxel raycasting for block targeting.
+//! - Block breaking progress based on hardness and tool tier.
+//! - Fixed 20 TPS simulation loop with render interpolation.
 
-#[cfg(test)]
-mod tests {
-    use super::*;
+pub mod aabb;
+pub mod interaction;
+pub mod physics;
+pub mod raycast;
+pub mod ticker;
+pub mod world_view;
 
-    #[test]
-    fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
-    }
-}
+pub use aabb::Aabb;
+pub use interaction::{
+    calculate_break_progress_per_tick, can_place_block, BlockBreaker, Tool, ToolTier, ToolType,
+};
+pub use physics::{
+    PlayerInput, PlayerPhysicsState, DRAG_HORIZONTAL_AIR, DRAG_VERTICAL_AIR, DRAG_WATER,
+    GRAVITY_AIR, GRAVITY_WATER, JUMP_VELOCITY, LADDER_SPEED, PLAYER_EYE_HEIGHT, PLAYER_HEIGHT,
+    PLAYER_WIDTH, STEP_HEIGHT,
+};
+pub use raycast::{raycast_voxel, HitFace, RaycastHit};
+pub use ticker::{interpolate_angle, interpolate_pos, Ticker, TICK_TIME, TPS};
+pub use world_view::BlockQuery;

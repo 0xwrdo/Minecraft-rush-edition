@@ -1,6 +1,11 @@
-//! Main Client Application wiring Winit, WGPU Renderer, Camera, Input, and ChunkManager.
+//! Main Client Application wiring Winit, WGPU Renderer, Camera, Input, ChunkManager, and Game Physics.
 
 use glam::Vec3;
+use mc_game::{
+    can_place_block, interpolate_pos, raycast_voxel, BlockBreaker, PlayerInput as GameInput,
+    PlayerPhysicsState, Ticker, Tool, PLAYER_EYE_HEIGHT,
+};
+use mc_world::BlockId;
 use std::sync::Arc;
 use std::time::Instant;
 use winit::dpi::PhysicalSize;
@@ -22,7 +27,12 @@ pub struct App {
     input: InputState,
     chunk_manager: ChunkManager,
     debug_overlay: DebugOverlay,
+    player: PlayerPhysicsState,
+    ticker: Ticker,
+    block_breaker: BlockBreaker,
     last_frame_time: Instant,
+    targeted_block: Option<(i32, i32, i32)>,
+    targeted_face: Option<String>,
 }
 
 impl App {
@@ -45,14 +55,18 @@ impl App {
         let aspect = renderer.size.0 as f32 / renderer.size.1 as f32;
 
         // Start player above terrain at sea level
-        let start_pos = Vec3::new(8.0, 75.0, 8.0);
-        let camera = Camera::new(start_pos, aspect);
+        let start_pos = Vec3::new(8.5, 75.0, 8.5);
+        let camera = Camera::new(start_pos + Vec3::new(0.0, PLAYER_EYE_HEIGHT, 0.0), aspect);
         let mut camera_uniform = CameraUniform::new();
         camera_uniform.update_view_proj(&camera);
 
         let world_seed = 42;
         let num_workers = 2; // Dedicated worker threads for mesh generation
         let chunk_manager = ChunkManager::new(world_seed, num_workers);
+
+        let player = PlayerPhysicsState::new(start_pos);
+        let ticker = Ticker::new();
+        let block_breaker = BlockBreaker::new();
 
         Self {
             window,
@@ -62,7 +76,12 @@ impl App {
             input: InputState::new(),
             chunk_manager,
             debug_overlay: DebugOverlay::new(),
+            player,
+            ticker,
+            block_breaker,
             last_frame_time: Instant::now(),
+            targeted_block: None,
+            targeted_face: None,
         }
     }
 
@@ -132,7 +151,7 @@ impl App {
     }
 
     fn update(&mut self, dt: f32) {
-        // Handle Escape to toggle cursor lock
+        // 1. Handle Escape to toggle cursor lock
         if self.input.escape_pressed {
             self.input.escape_pressed = false;
             self.input.mouse_grabbed = !self.input.mouse_grabbed;
@@ -148,43 +167,124 @@ impl App {
             }
         }
 
-        // Handle F3 overlay toggle
+        // 2. Handle F3 overlay toggle
         if self.input.toggle_debug_overlay {
             self.input.toggle_debug_overlay = false;
             self.debug_overlay.toggle();
         }
 
-        // Update camera look from mouse delta
+        // 3. Handle G toggle flight mode vs survival physics
+        if self.input.toggle_flight {
+            self.input.toggle_flight = false;
+            self.player.flight_mode = !self.player.flight_mode;
+        }
+
+        // 4. Update camera look from mouse delta
         let (dx, dy) = self.input.reset_mouse_delta();
         if self.input.mouse_grabbed {
             let sensitivity = 0.0025;
             self.camera.rotate(-dx * sensitivity, -dy * sensitivity);
+            self.player.yaw = self.camera.yaw;
+            self.player.pitch = self.camera.pitch;
         }
 
-        // Update camera position from WASD / Space / Shift
-        let move_dir = self.input.movement_vector();
-        if move_dir.length_squared() > 0.0 {
-            let speed = 25.0 * dt; // Fly speed in blocks per second
-            let forward = self.camera.forward();
-            let flat_forward = Vec3::new(forward.x, 0.0, forward.z).normalize_or_zero();
-            let right = self.camera.right();
+        // 5. Fixed 20 TPS physics tick loop
+        let forward_val = (self.input.forward as i32 - self.input.backward as i32) as f32;
+        let strafe_val = (self.input.right as i32 - self.input.left as i32) as f32;
 
-            let delta_pos = flat_forward * move_dir.z * speed
-                + right * move_dir.x * speed
-                + Vec3::Y * move_dir.y * speed;
+        let game_input = GameInput {
+            forward: forward_val,
+            strafe: strafe_val,
+            jump: self.input.up,
+            sneak: self.input.down,
+            sprint: self.input.sprint,
+            flying: self.player.flight_mode,
+        };
 
-            self.camera.position += delta_pos;
+        // Advance 20 TPS ticks and compute partial tick alpha for interpolation
+        let player = &mut self.player;
+        let chunk_manager = &mut self.chunk_manager;
+
+        let alpha = self.ticker.update(dt, |_tick| {
+            player.tick(&game_input, chunk_manager, &chunk_manager.registry);
+        });
+
+        // 6. Render position interpolation
+        let render_pos = interpolate_pos(self.player.prev_position, self.player.position, alpha);
+        self.camera.position = render_pos + Vec3::new(0.0, PLAYER_EYE_HEIGHT, 0.0);
+
+        // 7. Voxel Raycast (DDA) for Breaking / Placing
+        let raycast_hit = raycast_voxel(
+            self.camera.position,
+            self.camera.forward(),
+            5.0, // 5 blocks reach
+            chunk_manager,
+            &chunk_manager.registry,
+        );
+
+        if let Some(ref hit) = raycast_hit {
+            self.targeted_block = Some(hit.block_pos);
+            self.targeted_face = Some(format!("{:?}", hit.face));
+
+            // Left Click: Mine targeted block
+            if self.input.left_mouse {
+                let block_id =
+                    chunk_manager.get_block(hit.block_pos.0, hit.block_pos.1, hit.block_pos.2);
+                let block_def = chunk_manager.registry.get(block_id);
+
+                let broken = self.block_breaker.update(
+                    hit.block_pos,
+                    &Tool::HAND,
+                    &block_def,
+                    self.player.on_ground,
+                    self.player.in_water,
+                );
+
+                if broken {
+                    chunk_manager.set_block(
+                        hit.block_pos.0,
+                        hit.block_pos.1,
+                        hit.block_pos.2,
+                        BlockId::AIR,
+                    );
+                }
+            } else {
+                self.block_breaker.reset();
+            }
+
+            // Right Click: Place block against targeted face
+            if self.input.right_mouse_click {
+                self.input.right_mouse_click = false;
+                let place_id = BlockId::COBBLESTONE;
+                let place_def = chunk_manager.registry.get(place_id);
+
+                if can_place_block(hit.place_pos, &place_def, &self.player.aabb()) {
+                    chunk_manager.set_block(
+                        hit.place_pos.0,
+                        hit.place_pos.1,
+                        hit.place_pos.2,
+                        place_id,
+                    );
+                }
+            }
+        } else {
+            self.targeted_block = None;
+            self.targeted_face = None;
+            self.block_breaker.reset();
+            if self.input.right_mouse_click {
+                self.input.right_mouse_click = false;
+            }
         }
 
-        // Update Chunk Manager (loads, generates, and uploads finished worker meshes)
+        // 8. Update Chunk Manager (chunk streaming and background worker meshes)
         self.chunk_manager
-            .update(self.camera.position, &self.renderer.device);
+            .update(self.player.position, &self.renderer.device);
 
-        // Update Camera Uniform
+        // 9. Update Camera Uniform
         self.camera_uniform.update_view_proj(&self.camera);
         self.renderer.update_camera(&self.camera_uniform);
 
-        // Update FPS & Timing
+        // 10. Update FPS & Timing
         self.debug_overlay.update_timing(dt);
     }
 
@@ -196,9 +296,9 @@ impl App {
         let rendered_count = visible_meshes.len();
 
         // Build debug overlay HUD
-        let px = self.camera.position.x;
-        let py = self.camera.position.y;
-        let pz = self.camera.position.z;
+        let px = self.player.position.x;
+        let py = self.player.position.y;
+        let pz = self.player.position.z;
         let chunk_coords = (
             (px / 16.0).floor() as i32,
             (py / 16.0).floor() as i32,

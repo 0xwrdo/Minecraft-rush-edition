@@ -11,11 +11,15 @@ pub struct InputState {
     pub right: bool,
     pub up: bool,
     pub down: bool,
+    pub sprint: bool,
     pub mouse_delta_x: f32,
     pub mouse_delta_y: f32,
     pub mouse_grabbed: bool,
     pub toggle_debug_overlay: bool,
+    pub toggle_flight: bool,
     pub escape_pressed: bool,
+    pub left_mouse: bool,
+    pub right_mouse_click: bool,
 }
 
 impl InputState {
@@ -27,11 +31,15 @@ impl InputState {
             right: false,
             up: false,
             down: false,
+            sprint: false,
             mouse_delta_x: 0.0,
             mouse_delta_y: 0.0,
             mouse_grabbed: true,
             toggle_debug_overlay: false,
+            toggle_flight: false,
             escape_pressed: false,
+            left_mouse: false,
+            right_mouse_click: false,
         }
     }
 
@@ -45,6 +53,12 @@ impl InputState {
                 KeyCode::KeyD => self.right = is_pressed,
                 KeyCode::Space => self.up = is_pressed,
                 KeyCode::ShiftLeft | KeyCode::ShiftRight => self.down = is_pressed,
+                KeyCode::ControlLeft | KeyCode::ControlRight => self.sprint = is_pressed,
+                KeyCode::KeyG => {
+                    if is_pressed && !event.repeat {
+                        self.toggle_flight = true;
+                    }
+                }
                 KeyCode::F3 => {
                     if is_pressed && !event.repeat {
                         self.toggle_debug_overlay = true;
@@ -59,9 +73,21 @@ impl InputState {
     }
 
     pub fn handle_mouse_button(&mut self, button: MouseButton, state: ElementState) {
-        if button == MouseButton::Left && state == ElementState::Pressed && !self.mouse_grabbed {
-            // Re-acquire mouse focus upon click
-            self.mouse_grabbed = true;
+        let is_pressed = state == ElementState::Pressed;
+        if !self.mouse_grabbed {
+            if button == MouseButton::Left && is_pressed {
+                // Re-acquire mouse focus upon click
+                self.mouse_grabbed = true;
+            }
+            return;
+        }
+
+        match button {
+            MouseButton::Left => self.left_mouse = is_pressed,
+            MouseButton::Right if is_pressed => {
+                self.right_mouse_click = true;
+            }
+            _ => {}
         }
     }
 

@@ -1,7 +1,8 @@
 //! Chunk management: dynamic loading/unloading around the player and worker thread meshing.
 
 use glam::Vec3;
-use mc_world::{BlockRegistry, Chunk, TerrainGenerator, CHUNK_X, CHUNK_Y, CHUNK_Z};
+use mc_game::BlockQuery;
+use mc_world::{BlockId, BlockRegistry, Chunk, TerrainGenerator, CHUNK_X, CHUNK_Y, CHUNK_Z};
 use std::collections::{HashMap, HashSet};
 use std::sync::mpsc::{channel, Receiver, Sender};
 use std::sync::Arc;
@@ -38,7 +39,7 @@ pub struct MeshResult {
 
 pub struct ChunkManager {
     generator: TerrainGenerator,
-    registry: BlockRegistry,
+    pub registry: BlockRegistry,
     loaded_chunks: HashMap<(i32, i32), Arc<Chunk>>,
     pub gpu_meshes: HashMap<(i32, i32), GpuChunkMesh>,
     pending_mesh_jobs: HashSet<(i32, i32)>,
@@ -240,5 +241,84 @@ impl ChunkManager {
 
     pub fn meshed_chunks_count(&self) -> usize {
         self.gpu_meshes.len()
+    }
+
+    /// Read block at world coordinates
+    pub fn get_block(&self, x: i32, y: i32, z: i32) -> BlockId {
+        if !(0..128).contains(&y) {
+            return BlockId::AIR;
+        }
+        let cx = x.div_euclid(16);
+        let cz = z.div_euclid(16);
+        let bx = x.rem_euclid(16) as usize;
+        let bz = z.rem_euclid(16) as usize;
+
+        if let Some(chunk) = self.loaded_chunks.get(&(cx, cz)) {
+            chunk.get_block(bx, y as usize, bz)
+        } else {
+            BlockId::AIR
+        }
+    }
+
+    /// Place or destroy a block at world coordinates and trigger remeshing
+    pub fn set_block(&mut self, x: i32, y: i32, z: i32, block_id: BlockId) -> bool {
+        if !(0..128).contains(&y) {
+            return false;
+        }
+        let cx = x.div_euclid(16);
+        let cz = z.div_euclid(16);
+        let bx = x.rem_euclid(16) as usize;
+        let bz = z.rem_euclid(16) as usize;
+
+        let coords = (cx, cz);
+        if let Some(chunk_arc) = self.loaded_chunks.get_mut(&coords) {
+            // Clone Chunk if shared with background mesher
+            let chunk = Arc::make_mut(chunk_arc);
+            chunk.set_block(bx, y as usize, bz, block_id);
+
+            // Requeue this chunk for meshing
+            self.requeue_mesh(coords);
+
+            // Requeue borders if on boundary
+            if bx == 0 {
+                self.requeue_mesh((cx - 1, cz));
+            } else if bx == 15 {
+                self.requeue_mesh((cx + 1, cz));
+            }
+            if bz == 0 {
+                self.requeue_mesh((cx, cz - 1));
+            } else if bz == 15 {
+                self.requeue_mesh((cx, cz + 1));
+            }
+
+            true
+        } else {
+            false
+        }
+    }
+
+    fn requeue_mesh(&mut self, target: (i32, i32)) {
+        if let Some(center) = self.loaded_chunks.get(&target).cloned() {
+            let north = self.loaded_chunks.get(&(target.0, target.1 - 1)).cloned();
+            let south = self.loaded_chunks.get(&(target.0, target.1 + 1)).cloned();
+            let west = self.loaded_chunks.get(&(target.0 - 1, target.1)).cloned();
+            let east = self.loaded_chunks.get(&(target.0 + 1, target.1)).cloned();
+
+            self.pending_mesh_jobs.insert(target);
+            let _ = self.job_tx.send(MeshJob {
+                coords: target,
+                center,
+                north,
+                south,
+                west,
+                east,
+            });
+        }
+    }
+}
+
+impl BlockQuery for ChunkManager {
+    fn get_block_id(&self, x: i32, y: i32, z: i32) -> BlockId {
+        self.get_block(x, y, z)
     }
 }

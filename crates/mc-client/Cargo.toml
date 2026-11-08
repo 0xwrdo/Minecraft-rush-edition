@@ -8,6 +8,7 @@ license.workspace = true
 mc-rand = { path = "../mc-rand" }
 mc-noise = { path = "../mc-noise" }
 mc-world = { path = "../mc-world" }
+mc-game = { path = "../mc-game" }
 wgpu = "22"
 winit = "0.29"
 glam = "0.28"
