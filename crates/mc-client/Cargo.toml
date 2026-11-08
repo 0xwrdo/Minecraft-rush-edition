@@ -5,3 +5,12 @@ edition.workspace = true
 license.workspace = true
 
 [dependencies]
+mc-rand = { path = "../mc-rand" }
+mc-noise = { path = "../mc-noise" }
+mc-world = { path = "../mc-world" }
+wgpu = "22"
+winit = "0.29"
+glam = "0.28"
+bytemuck = { version = "1.16", features = ["derive"] }
+pollster = "0.3"
+
