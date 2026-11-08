@@ -30,3 +30,4 @@
   { "id": 89, "name": "glowstone", "solid": true, "opacity": 15, "light_emission": 15, "is_fluid": false },
   { "id": 110, "name": "mycelium", "solid": true, "opacity": 15, "light_emission": 0, "is_fluid": false }
 ]
+

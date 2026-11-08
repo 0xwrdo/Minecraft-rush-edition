@@ -8,6 +8,8 @@ mc-rand = { path = "../mc-rand" }
 mc-noise = { path = "../mc-noise" }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
+byteorder = "1.5"
+flate2 = { version = "1.0", default-features = false, features = ["rust_backend"] }
 
 [[bin]]
 name = "gen_region"
