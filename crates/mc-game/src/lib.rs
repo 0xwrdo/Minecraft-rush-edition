@@ -26,6 +26,7 @@ pub mod mob;
 pub mod pathfinding;
 pub mod physics;
 pub mod raycast;
+pub mod redstone;
 pub mod spawner;
 pub mod survival;
 pub mod ticker;
@@ -64,6 +65,10 @@ pub use physics::{
     PLAYER_WIDTH, STEP_HEIGHT,
 };
 pub use raycast::{raycast_voxel, HitFace, RaycastHit};
+pub use redstone::{
+    Direction, PowerType, RedstoneEngine, RedstoneWorldAccess, MAX_SIGNAL, PISTON_PUSH_LIMIT,
+    TNT_FUSE_TICKS,
+};
 pub use spawner::{MobSpawner, SpawnCandidate, HOSTILE_MOB_CAP, PASSIVE_MOB_CAP, WATER_MOB_CAP};
 pub use survival::{Difficulty, GameMode, SurvivalVitals};
 pub use ticker::{interpolate_angle, interpolate_pos, Ticker, TICK_TIME, TPS};

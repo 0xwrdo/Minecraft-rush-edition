@@ -39,6 +39,23 @@ impl BlockId {
     pub const GLOWSTONE: Self = Self(89);
     pub const MYCELIUM: Self = Self(110);
     pub const LADDER: Self = Self(65);
+
+    // Redstone Components
+    pub const DISPENSER: Self = Self(23);
+    pub const NOTE_BLOCK: Self = Self(25);
+    pub const STICKY_PISTON: Self = Self(29);
+    pub const PISTON: Self = Self(33);
+    pub const PISTON_HEAD: Self = Self(34);
+    pub const TNT: Self = Self(46);
+    pub const REDSTONE_WIRE: Self = Self(55);
+    pub const LEVER: Self = Self(69);
+    pub const STONE_PRESSURE_PLATE: Self = Self(70);
+    pub const WOOD_PRESSURE_PLATE: Self = Self(72);
+    pub const REDSTONE_TORCH_OFF: Self = Self(75);
+    pub const REDSTONE_TORCH_ON: Self = Self(76);
+    pub const STONE_BUTTON: Self = Self(77);
+    pub const REPEATER_OFF: Self = Self(93);
+    pub const REPEATER_ON: Self = Self(94);
 }
 
 /// Block property definition loaded from JSON or default registry.
@@ -423,6 +440,174 @@ impl BlockRegistry {
                 false,
                 0.6,
                 true,
+            ),
+            (
+                BlockId::REDSTONE_WIRE,
+                "redstone_wire",
+                false,
+                0,
+                0,
+                false,
+                0.0,
+                false,
+                0.6,
+                false,
+            ),
+            (
+                BlockId::REDSTONE_TORCH_ON,
+                "redstone_torch_on",
+                false,
+                0,
+                7,
+                false,
+                0.0,
+                false,
+                0.6,
+                false,
+            ),
+            (
+                BlockId::REDSTONE_TORCH_OFF,
+                "redstone_torch_off",
+                false,
+                0,
+                0,
+                false,
+                0.0,
+                false,
+                0.6,
+                false,
+            ),
+            (
+                BlockId::LEVER,
+                "lever",
+                false,
+                0,
+                0,
+                false,
+                0.5,
+                false,
+                0.6,
+                false,
+            ),
+            (
+                BlockId::STONE_BUTTON,
+                "stone_button",
+                false,
+                0,
+                0,
+                false,
+                0.5,
+                false,
+                0.6,
+                false,
+            ),
+            (
+                BlockId::STONE_PRESSURE_PLATE,
+                "stone_pressure_plate",
+                false,
+                0,
+                0,
+                false,
+                0.5,
+                true,
+                0.6,
+                false,
+            ),
+            (
+                BlockId::WOOD_PRESSURE_PLATE,
+                "wood_pressure_plate",
+                false,
+                0,
+                0,
+                false,
+                0.5,
+                false,
+                0.6,
+                false,
+            ),
+            (
+                BlockId::REPEATER_OFF,
+                "repeater_off",
+                false,
+                0,
+                0,
+                false,
+                0.0,
+                false,
+                0.6,
+                false,
+            ),
+            (
+                BlockId::REPEATER_ON,
+                "repeater_on",
+                false,
+                0,
+                9,
+                false,
+                0.0,
+                false,
+                0.6,
+                false,
+            ),
+            (
+                BlockId::PISTON,
+                "piston",
+                true,
+                15,
+                0,
+                false,
+                0.5,
+                true,
+                0.6,
+                false,
+            ),
+            (
+                BlockId::STICKY_PISTON,
+                "sticky_piston",
+                true,
+                15,
+                0,
+                false,
+                0.5,
+                true,
+                0.6,
+                false,
+            ),
+            (
+                BlockId::DISPENSER,
+                "dispenser",
+                true,
+                15,
+                0,
+                false,
+                3.5,
+                true,
+                0.6,
+                false,
+            ),
+            (
+                BlockId::NOTE_BLOCK,
+                "note_block",
+                true,
+                15,
+                0,
+                false,
+                0.8,
+                false,
+                0.6,
+                false,
+            ),
+            (
+                BlockId::TNT,
+                "tnt",
+                true,
+                0,
+                0,
+                false,
+                0.0,
+                false,
+                0.6,
+                false,
             ),
         ];
 
