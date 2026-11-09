@@ -14,7 +14,9 @@
 pub mod aabb;
 pub mod ai;
 pub mod block_update;
+pub mod brewing;
 pub mod crafting;
+pub mod enchanting;
 pub mod entity;
 pub mod falling_blocks;
 pub mod fluids;
@@ -39,7 +41,15 @@ pub use ai::{
     LookIdleGoal, MeleeAttackGoal, PanicGoal, WanderGoal,
 };
 pub use block_update::{BlockUpdateSystem, ScheduledTick, TickScheduler, WorldBlockAccess};
+pub use brewing::{
+    ActiveEffect, BrewingStand, EffectType, PotionMetadata, PotionType, StatusEffectManager,
+    BREWING_TIME_TICKS,
+};
 pub use crafting::{CraftingGrid, CraftingManager, RecipeFile, ShapedRecipe, ShapelessRecipe};
+pub use enchanting::{
+    EnchantingTable, EnchantmentDef, EnchantmentFile, EnchantmentInstance, EnchantmentRegistry,
+    ItemTarget, MAX_BOOKSHELVES, MAX_ENCHANTMENT_LEVEL,
+};
 pub use entity::{ItemEntity, PlayerXp, XpOrb, DESPAWN_TICKS, ITEM_PICKUP_RADIUS};
 pub use falling_blocks::{FallingBlockResult, FallingBlockSimulator, FallingBlockWorldQuery};
 pub use fluids::{

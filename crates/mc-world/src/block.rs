@@ -69,6 +69,12 @@ impl BlockId {
     pub const END_PORTAL_FRAME: Self = Self(120);
     pub const END_STONE: Self = Self(121);
     pub const DRAGON_EGG: Self = Self(122);
+
+    // Enchanting and Brewing
+    pub const BOOKSHELF: Self = Self(47);
+    pub const ENCHANTING_TABLE: Self = Self(116);
+    pub const BREWING_STAND: Self = Self(117);
+    pub const CAULDRON: Self = Self(118);
 }
 
 /// Block property definition loaded from JSON or default registry.
@@ -751,6 +757,54 @@ impl BlockRegistry {
                 false,
                 3.0,
                 false,
+                0.6,
+                false,
+            ),
+            (
+                BlockId::BOOKSHELF,
+                "bookshelf",
+                true,
+                15,
+                0,
+                false,
+                1.5,
+                false,
+                0.6,
+                false,
+            ),
+            (
+                BlockId::ENCHANTING_TABLE,
+                "enchanting_table",
+                true,
+                0,
+                0,
+                false,
+                5.0,
+                true,
+                0.6,
+                false,
+            ),
+            (
+                BlockId::BREWING_STAND,
+                "brewing_stand",
+                false,
+                0,
+                1,
+                false,
+                0.5,
+                true,
+                0.6,
+                false,
+            ),
+            (
+                BlockId::CAULDRON,
+                "cauldron",
+                true,
+                0,
+                0,
+                false,
+                2.0,
+                true,
                 0.6,
                 false,
             ),

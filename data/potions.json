@@ -1,0 +1,69 @@
+{
+  "potions": [
+    {
+      "name": "Water",
+      "effect": "None",
+      "base_duration": 0
+    },
+    {
+      "name": "Awkward",
+      "effect": "None",
+      "base_duration": 0
+    },
+    {
+      "name": "Thick",
+      "effect": "None",
+      "base_duration": 0
+    },
+    {
+      "name": "Mundane",
+      "effect": "None",
+      "base_duration": 0
+    },
+    {
+      "name": "Swiftness",
+      "effect": "Speed",
+      "base_duration": 3600
+    },
+    {
+      "name": "Slowness",
+      "effect": "Slowness",
+      "base_duration": 1800
+    },
+    {
+      "name": "Strength",
+      "effect": "Strength",
+      "base_duration": 3600
+    },
+    {
+      "name": "Weakness",
+      "effect": "Weakness",
+      "base_duration": 1800
+    },
+    {
+      "name": "Healing",
+      "effect": "InstantHealth",
+      "base_duration": 0
+    },
+    {
+      "name": "Harming",
+      "effect": "InstantDamage",
+      "base_duration": 0
+    },
+    {
+      "name": "Regeneration",
+      "effect": "Regeneration",
+      "base_duration": 900
+    },
+    {
+      "name": "FireResistance",
+      "effect": "FireResistance",
+      "base_duration": 3600
+    },
+    {
+      "name": "Poison",
+      "effect": "Poison",
+      "base_duration": 900
+    }
+  ]
+}
