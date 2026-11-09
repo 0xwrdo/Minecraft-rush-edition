@@ -56,6 +56,19 @@ impl BlockId {
     pub const STONE_BUTTON: Self = Self(77);
     pub const REPEATER_OFF: Self = Self(93);
     pub const REPEATER_ON: Self = Self(94);
+
+    // Nether and End blocks
+    pub const NETHERRACK: Self = Self(87);
+    pub const SOUL_SAND: Self = Self(88);
+    pub const NETHER_PORTAL: Self = Self(90);
+    pub const NETHER_BRICK: Self = Self(112);
+    pub const NETHER_BRICK_FENCE: Self = Self(113);
+    pub const NETHER_BRICK_STAIRS: Self = Self(114);
+    pub const NETHER_WART_BLOCK: Self = Self(115);
+    pub const END_PORTAL: Self = Self(119);
+    pub const END_PORTAL_FRAME: Self = Self(120);
+    pub const END_STONE: Self = Self(121);
+    pub const DRAGON_EGG: Self = Self(122);
 }
 
 /// Block property definition loaded from JSON or default registry.
@@ -605,6 +618,138 @@ impl BlockRegistry {
                 0,
                 false,
                 0.0,
+                false,
+                0.6,
+                false,
+            ),
+            (
+                BlockId::NETHERRACK,
+                "netherrack",
+                true,
+                15,
+                0,
+                false,
+                0.4,
+                true,
+                0.6,
+                false,
+            ),
+            (
+                BlockId::SOUL_SAND,
+                "soul_sand",
+                true,
+                15,
+                0,
+                false,
+                0.5,
+                false,
+                0.4, // Soul sand slows movement
+                false,
+            ),
+            (
+                BlockId::NETHER_PORTAL,
+                "nether_portal",
+                false,
+                0,
+                11,
+                false,
+                -1.0,
+                false,
+                0.6,
+                false,
+            ),
+            (
+                BlockId::NETHER_BRICK,
+                "nether_brick",
+                true,
+                15,
+                0,
+                false,
+                2.0,
+                true,
+                0.6,
+                false,
+            ),
+            (
+                BlockId::NETHER_BRICK_FENCE,
+                "nether_brick_fence",
+                true,
+                0,
+                0,
+                false,
+                2.0,
+                true,
+                0.6,
+                false,
+            ),
+            (
+                BlockId::NETHER_BRICK_STAIRS,
+                "nether_brick_stairs",
+                true,
+                0,
+                0,
+                false,
+                2.0,
+                true,
+                0.6,
+                false,
+            ),
+            (
+                BlockId::NETHER_WART_BLOCK,
+                "nether_wart_block",
+                false,
+                0,
+                0,
+                false,
+                0.0,
+                false,
+                0.6,
+                false,
+            ),
+            (
+                BlockId::END_PORTAL,
+                "end_portal",
+                false,
+                0,
+                15,
+                false,
+                -1.0,
+                false,
+                0.6,
+                false,
+            ),
+            (
+                BlockId::END_PORTAL_FRAME,
+                "end_portal_frame",
+                true,
+                15,
+                1,
+                false,
+                -1.0, // Indestructible
+                false,
+                0.6,
+                false,
+            ),
+            (
+                BlockId::END_STONE,
+                "end_stone",
+                true,
+                15,
+                0,
+                false,
+                3.0,
+                true,
+                0.6,
+                false,
+            ),
+            (
+                BlockId::DRAGON_EGG,
+                "dragon_egg",
+                true,
+                1,
+                1,
+                false,
+                3.0,
                 false,
                 0.6,
                 false,

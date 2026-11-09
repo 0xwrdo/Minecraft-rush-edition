@@ -6,6 +6,7 @@ pub mod biome;
 pub mod block;
 pub mod chunk;
 pub mod chunk_nbt;
+pub mod dimension;
 pub mod generator;
 pub mod level;
 pub mod lighting;
@@ -16,6 +17,10 @@ pub use biome::{BiomeId, BiomeProperties};
 pub use block::{BlockDef, BlockId, BlockRegistry};
 pub use chunk::{Chunk, NibbleArray, CHUNK_BLOCKS, CHUNK_X, CHUNK_Y, CHUNK_Z, SEA_LEVEL};
 pub use chunk_nbt::ChunkNbt;
+pub use dimension::{
+    DimensionId, EndGenerator, NetherGenerator, StrongholdGenerator, NETHER_LAVA_LEVEL,
+    NETHER_SCALE_RATIO,
+};
 pub use generator::TerrainGenerator;
 pub use level::LevelData;
 pub use lighting::{

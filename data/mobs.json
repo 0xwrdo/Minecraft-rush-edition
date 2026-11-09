@@ -129,6 +129,56 @@
       "width": 0.6,
       "height": 2.9,
       "xp_drop": 5
+    },
+    {
+      "species": "Ghast",
+      "category": "Monster",
+      "max_health": 10.0,
+      "movement_speed": 0.1,
+      "attack_damage": 6.0,
+      "width": 4.0,
+      "height": 4.0,
+      "xp_drop": 5
+    },
+    {
+      "species": "Blaze",
+      "category": "Monster",
+      "max_health": 20.0,
+      "movement_speed": 0.23,
+      "attack_damage": 6.0,
+      "width": 0.6,
+      "height": 1.8,
+      "xp_drop": 10
+    },
+    {
+      "species": "MagmaCube",
+      "category": "Monster",
+      "max_health": 16.0,
+      "movement_speed": 0.2,
+      "attack_damage": 4.0,
+      "width": 2.04,
+      "height": 2.04,
+      "xp_drop": 4
+    },
+    {
+      "species": "ZombiePigman",
+      "category": "Monster",
+      "max_health": 20.0,
+      "movement_speed": 0.23,
+      "attack_damage": 5.0,
+      "width": 0.6,
+      "height": 1.95,
+      "xp_drop": 5
+    },
+    {
+      "species": "EnderDragon",
+      "category": "Monster",
+      "max_health": 200.0,
+      "movement_speed": 0.5,
+      "attack_damage": 10.0,
+      "width": 16.0,
+      "height": 8.0,
+      "xp_drop": 12000
     }
   ]
 }

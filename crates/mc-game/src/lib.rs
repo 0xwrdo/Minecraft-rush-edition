@@ -25,6 +25,7 @@ pub mod item;
 pub mod mob;
 pub mod pathfinding;
 pub mod physics;
+pub mod portal;
 pub mod raycast;
 pub mod redstone;
 pub mod spawner;
@@ -63,6 +64,10 @@ pub use physics::{
     PlayerInput, PlayerPhysicsState, DRAG_HORIZONTAL_AIR, DRAG_VERTICAL_AIR, DRAG_WATER,
     GRAVITY_AIR, GRAVITY_WATER, JUMP_VELOCITY, LADDER_SPEED, PLAYER_EYE_HEIGHT, PLAYER_HEIGHT,
     PLAYER_WIDTH, STEP_HEIGHT,
+};
+pub use portal::{
+    DragonState, EnderCrystal, EnderDragonFight, PortalManager, PortalOrientation,
+    PortalWorldQuery, DRAGON_DEATH_XP, DRAGON_MAX_HEALTH, END_POEM_TEXT, END_SPAWN_PLATFORM,
 };
 pub use raycast::{raycast_voxel, HitFace, RaycastHit};
 pub use redstone::{

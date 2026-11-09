@@ -33,6 +33,11 @@ pub enum MobSpecies {
     CaveSpider,
     Slime,
     Enderman,
+    Ghast,
+    Blaze,
+    MagmaCube,
+    ZombiePigman,
+    EnderDragon,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
@@ -393,6 +398,17 @@ impl Mob {
             MobSpecies::Slime => drops.push(ItemStack::new(ItemId(341), 1)), // Slimeball
             MobSpecies::Enderman => drops.push(ItemStack::new(ItemId(368), 1)), // Ender Pearl
             MobSpecies::Squid => drops.push(ItemStack::new(ItemId(351), 2)), // Ink Sac
+            MobSpecies::Ghast => {
+                drops.push(ItemStack::new(ItemId(370), 1)); // Ghast Tear
+                drops.push(ItemStack::new(ItemId(289), 1)); // Gunpowder
+            }
+            MobSpecies::Blaze => drops.push(ItemStack::new(ItemId::BLAZE_ROD, 1)), // Blaze Rod
+            MobSpecies::MagmaCube => drops.push(ItemStack::new(ItemId(378), 1)),   // Magma Cream
+            MobSpecies::ZombiePigman => {
+                drops.push(ItemStack::new(ItemId(367), 1)); // Rotten Flesh
+                drops.push(ItemStack::new(ItemId(371), 1)); // Gold Nugget
+            }
+            MobSpecies::EnderDragon => {}
             MobSpecies::Wolf => {}
         }
         drops
