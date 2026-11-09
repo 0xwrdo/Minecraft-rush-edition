@@ -1,0 +1,10 @@
+{
+  "fuels": [
+    { "item_id": 263, "burn_ticks": 1600 },
+    { "item_id": 17, "burn_ticks": 300 },
+    { "item_id": 5, "burn_ticks": 300 },
+    { "item_id": 280, "burn_ticks": 100 },
+    { "item_id": 327, "burn_ticks": 20000 },
+    { "item_id": 369, "burn_ticks": 2400 }
+  ]
+}

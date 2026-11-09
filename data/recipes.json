@@ -1,0 +1,83 @@
+{
+  "shaped": [
+    {
+      "name": "sticks",
+      "width": 1,
+      "height": 2,
+      "pattern": [5, 5],
+      "result": { "item_id": 280, "count": 4, "damage": 0 }
+    },
+    {
+      "name": "crafting_table",
+      "width": 2,
+      "height": 2,
+      "pattern": [5, 5, 5, 5],
+      "result": { "item_id": 58, "count": 1, "damage": 0 }
+    },
+    {
+      "name": "torch",
+      "width": 1,
+      "height": 2,
+      "pattern": [263, 280],
+      "result": { "item_id": 50, "count": 4, "damage": 0 }
+    },
+    {
+      "name": "furnace",
+      "width": 3,
+      "height": 3,
+      "pattern": [
+        4, 4, 4,
+        4, 0, 4,
+        4, 4, 4
+      ],
+      "result": { "item_id": 61, "count": 1, "damage": 0 }
+    },
+    {
+      "name": "chest",
+      "width": 3,
+      "height": 3,
+      "pattern": [
+        5, 5, 5,
+        5, 0, 5,
+        5, 5, 5
+      ],
+      "result": { "item_id": 54, "count": 1, "damage": 0 }
+    },
+    {
+      "name": "wooden_pickaxe",
+      "width": 3,
+      "height": 3,
+      "pattern": [
+        5, 5, 5,
+        0, 280, 0,
+        0, 280, 0
+      ],
+      "result": { "item_id": 270, "count": 1, "damage": 0 }
+    },
+    {
+      "name": "wooden_sword",
+      "width": 1,
+      "height": 3,
+      "pattern": [5, 5, 280],
+      "result": { "item_id": 268, "count": 1, "damage": 0 }
+    },
+    {
+      "name": "diamond_pickaxe",
+      "width": 3,
+      "height": 3,
+      "pattern": [
+        264, 264, 264,
+        0, 280, 0,
+        0, 280, 0
+      ],
+      "result": { "item_id": 278, "count": 1, "damage": 0 }
+    }
+  ],
+  "shapeless": [
+    {
+      "name": "oak_planks",
+      "ingredients": [17],
+      "result": { "item_id": 5, "count": 4, "damage": 0 }
+    }
+  ]
+}
