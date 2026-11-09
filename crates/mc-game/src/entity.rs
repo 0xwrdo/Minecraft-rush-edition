@@ -54,8 +54,7 @@ impl ItemEntity {
         self.velocity *= 0.98;
 
         let original_box = self.aabb();
-        let surrounding =
-            world.get_colliding_aabbs(&original_box.expand(self.velocity.abs()), registry);
+        let surrounding = world.get_colliding_aabbs(&original_box.expand(self.velocity), registry);
 
         let mut actual_move = self.velocity;
 

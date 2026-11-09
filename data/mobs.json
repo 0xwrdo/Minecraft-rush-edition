@@ -1,0 +1,134 @@
+{
+  "mobs": [
+    {
+      "species": "Pig",
+      "category": "Creature",
+      "max_health": 10.0,
+      "movement_speed": 0.25,
+      "attack_damage": 0.0,
+      "width": 0.9,
+      "height": 0.9,
+      "xp_drop": 2
+    },
+    {
+      "species": "Cow",
+      "category": "Creature",
+      "max_health": 10.0,
+      "movement_speed": 0.2,
+      "attack_damage": 0.0,
+      "width": 0.9,
+      "height": 1.4,
+      "xp_drop": 2
+    },
+    {
+      "species": "Sheep",
+      "category": "Creature",
+      "max_health": 8.0,
+      "movement_speed": 0.23,
+      "attack_damage": 0.0,
+      "width": 0.9,
+      "height": 1.3,
+      "xp_drop": 2
+    },
+    {
+      "species": "Chicken",
+      "category": "Creature",
+      "max_health": 4.0,
+      "movement_speed": 0.25,
+      "attack_damage": 0.0,
+      "width": 0.4,
+      "height": 0.7,
+      "xp_drop": 2
+    },
+    {
+      "species": "Squid",
+      "category": "WaterCreature",
+      "max_health": 10.0,
+      "movement_speed": 0.1,
+      "attack_damage": 0.0,
+      "width": 0.95,
+      "height": 0.95,
+      "xp_drop": 2
+    },
+    {
+      "species": "Wolf",
+      "category": "Creature",
+      "max_health": 8.0,
+      "movement_speed": 0.3,
+      "attack_damage": 2.0,
+      "width": 0.6,
+      "height": 0.85,
+      "xp_drop": 2
+    },
+    {
+      "species": "Zombie",
+      "category": "Monster",
+      "max_health": 20.0,
+      "movement_speed": 0.23,
+      "attack_damage": 3.0,
+      "width": 0.6,
+      "height": 1.95,
+      "xp_drop": 5
+    },
+    {
+      "species": "Skeleton",
+      "category": "Monster",
+      "max_health": 20.0,
+      "movement_speed": 0.25,
+      "attack_damage": 3.0,
+      "width": 0.6,
+      "height": 1.95,
+      "xp_drop": 5
+    },
+    {
+      "species": "Creeper",
+      "category": "Monster",
+      "max_health": 20.0,
+      "movement_speed": 0.25,
+      "attack_damage": 20.0,
+      "width": 0.6,
+      "height": 1.7,
+      "xp_drop": 5
+    },
+    {
+      "species": "Spider",
+      "category": "Monster",
+      "max_health": 16.0,
+      "movement_speed": 0.3,
+      "attack_damage": 2.0,
+      "width": 1.4,
+      "height": 0.9,
+      "xp_drop": 5
+    },
+    {
+      "species": "CaveSpider",
+      "category": "Monster",
+      "max_health": 12.0,
+      "movement_speed": 0.3,
+      "attack_damage": 2.0,
+      "width": 0.7,
+      "height": 0.5,
+      "xp_drop": 5
+    },
+    {
+      "species": "Slime",
+      "category": "Monster",
+      "max_health": 16.0,
+      "movement_speed": 0.2,
+      "attack_damage": 4.0,
+      "width": 2.04,
+      "height": 2.04,
+      "xp_drop": 4
+    },
+    {
+      "species": "Enderman",
+      "category": "Monster",
+      "max_health": 40.0,
+      "movement_speed": 0.3,
+      "attack_damage": 7.0,
+      "width": 0.6,
+      "height": 2.9,
+      "xp_drop": 5
+    }
+  ]
+}

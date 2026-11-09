@@ -12,6 +12,7 @@
 //! - Fixed 20 TPS simulation loop with render interpolation.
 
 pub mod aabb;
+pub mod ai;
 pub mod block_update;
 pub mod crafting;
 pub mod entity;
@@ -21,13 +22,20 @@ pub mod furnace;
 pub mod interaction;
 pub mod inventory;
 pub mod item;
+pub mod mob;
+pub mod pathfinding;
 pub mod physics;
 pub mod raycast;
+pub mod spawner;
 pub mod survival;
 pub mod ticker;
 pub mod world_view;
 
 pub use aabb::Aabb;
+pub use ai::{
+    follow_path, AiContext, AiGoal, AiGoalEntry, AiGoalSelector, FleeGoal, FollowGoal,
+    LookIdleGoal, MeleeAttackGoal, PanicGoal, WanderGoal,
+};
 pub use block_update::{BlockUpdateSystem, ScheduledTick, TickScheduler, WorldBlockAccess};
 pub use crafting::{CraftingGrid, CraftingManager, RecipeFile, ShapedRecipe, ShapelessRecipe};
 pub use entity::{ItemEntity, PlayerXp, XpOrb, DESPAWN_TICKS, ITEM_PICKUP_RADIUS};
@@ -45,12 +53,18 @@ pub use inventory::{
     MAIN_INVENTORY_SIZE,
 };
 pub use item::{ArmorSlot, ItemId, ItemStack};
+pub use mob::{
+    Mob, MobCategory, MobDataFile, MobDef, MobRegistry, MobSpecies, BABY_GROWTH_TICKS,
+    CREEPER_FUSE_TICKS, IN_LOVE_DURATION,
+};
+pub use pathfinding::{BlockPos, PathFinder, DEFAULT_MAX_PATH_NODES};
 pub use physics::{
     PlayerInput, PlayerPhysicsState, DRAG_HORIZONTAL_AIR, DRAG_VERTICAL_AIR, DRAG_WATER,
     GRAVITY_AIR, GRAVITY_WATER, JUMP_VELOCITY, LADDER_SPEED, PLAYER_EYE_HEIGHT, PLAYER_HEIGHT,
     PLAYER_WIDTH, STEP_HEIGHT,
 };
 pub use raycast::{raycast_voxel, HitFace, RaycastHit};
+pub use spawner::{MobSpawner, SpawnCandidate, HOSTILE_MOB_CAP, PASSIVE_MOB_CAP, WATER_MOB_CAP};
 pub use survival::{Difficulty, GameMode, SurvivalVitals};
 pub use ticker::{interpolate_angle, interpolate_pos, Ticker, TICK_TIME, TPS};
 pub use world_view::BlockQuery;
