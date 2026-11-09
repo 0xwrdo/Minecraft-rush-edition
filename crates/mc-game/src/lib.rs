@@ -12,6 +12,9 @@
 //! - Fixed 20 TPS simulation loop with render interpolation.
 
 pub mod aabb;
+pub mod block_update;
+pub mod falling_blocks;
+pub mod fluids;
 pub mod interaction;
 pub mod physics;
 pub mod raycast;
@@ -19,6 +22,12 @@ pub mod ticker;
 pub mod world_view;
 
 pub use aabb::Aabb;
+pub use block_update::{BlockUpdateSystem, ScheduledTick, TickScheduler, WorldBlockAccess};
+pub use falling_blocks::{FallingBlockResult, FallingBlockSimulator, FallingBlockWorldQuery};
+pub use fluids::{
+    FluidSimulator, FluidType, FluidWorldQuery, FLUID_FALLING_BIT, FLUID_LEVEL_MASK,
+    LAVA_MAX_SPREAD, LAVA_TICK_DELAY, WATER_MAX_SPREAD, WATER_TICK_DELAY,
+};
 pub use interaction::{
     calculate_break_progress_per_tick, can_place_block, BlockBreaker, Tool, ToolTier, ToolType,
 };
