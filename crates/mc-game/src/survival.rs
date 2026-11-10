@@ -33,6 +33,10 @@ pub struct SurvivalVitals {
     pub difficulty: Difficulty,
     pub is_dead: bool,
 
+    /// Air supply in ticks (300 ticks = 15 seconds, 10 bubbles)
+    pub air: u16,
+    pub drown_timer: u16,
+
     /// 80 ticks = 4.0 seconds per regen / starvation cycle
     pub regen_timer: u16,
     pub starvation_timer: u16,
@@ -41,6 +45,7 @@ pub struct SurvivalVitals {
 impl SurvivalVitals {
     pub const MAX_HEALTH: f32 = 20.0;
     pub const MAX_FOOD: u8 = 20;
+    pub const MAX_AIR: u16 = 300;
     pub const INITIAL_SATURATION: f32 = 5.0;
     pub const EXHAUSTION_THRESHOLD: f32 = 4.0;
     pub const TICK_CYCLE: u16 = 80;
@@ -58,6 +63,8 @@ impl SurvivalVitals {
                 Difficulty::Normal
             },
             is_dead: false,
+            air: Self::MAX_AIR,
+            drown_timer: 0,
             regen_timer: 0,
             starvation_timer: 0,
         }
@@ -180,6 +187,28 @@ impl SurvivalVitals {
         }
     }
 
+    /// Update environmental hazards (air/oxygen and drowning damage in water)
+    pub fn tick_environment(&mut self, in_water: bool) {
+        if self.is_dead || self.game_mode == GameMode::Creative {
+            return;
+        }
+
+        if in_water {
+            if self.air > 0 {
+                self.air -= 1;
+            } else {
+                self.drown_timer += 1;
+                if self.drown_timer >= 20 {
+                    self.drown_timer = 0;
+                    self.apply_damage(2.0, 0); // 2 drowning damage (1 heart) per second
+                }
+            }
+        } else {
+            self.air = Self::MAX_AIR;
+            self.drown_timer = 0;
+        }
+    }
+
     /// Attempt to respawn the player. Returns false in Hardcore mode (permanent death).
     pub fn respawn(&mut self) -> bool {
         if self.is_hardcore() {
@@ -191,6 +220,8 @@ impl SurvivalVitals {
         self.food_level = Self::MAX_FOOD;
         self.food_saturation = Self::INITIAL_SATURATION;
         self.food_exhaustion = 0.0;
+        self.air = Self::MAX_AIR;
+        self.drown_timer = 0;
         self.is_dead = false;
         self.regen_timer = 0;
         self.starvation_timer = 0;
@@ -266,5 +297,33 @@ mod tests {
 
         assert_eq!(vitals.health, 16.0);
         assert_eq!(vitals.food_exhaustion, 3.0);
+    }
+
+    #[test]
+    fn test_underwater_air_depletion_and_drowning() {
+        let mut vitals = SurvivalVitals::new(GameMode::Survival);
+        assert_eq!(vitals.air, 300);
+
+        // 100 ticks in water
+        for _ in 0..100 {
+            vitals.tick_environment(true);
+        }
+        assert_eq!(vitals.air, 200);
+
+        // Surfacing resets air
+        vitals.tick_environment(false);
+        assert_eq!(vitals.air, 300);
+
+        // Fully exhaust air: 300 ticks in water
+        for _ in 0..300 {
+            vitals.tick_environment(true);
+        }
+        assert_eq!(vitals.air, 0);
+
+        // 20 ticks out of air triggers 2 drowning damage
+        for _ in 0..20 {
+            vitals.tick_environment(true);
+        }
+        assert_eq!(vitals.health, 18.0);
     }
 }

@@ -1,6 +1,8 @@
 target/
 **/target/
 **/*.ppm
-**/*.png
-Cargo.lock
-
+*.zip
+options.txt
+saves/
+debug/
+region_*.png

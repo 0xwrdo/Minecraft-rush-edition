@@ -28,12 +28,11 @@ fn vs_main(in: VertexInput) -> VertexOutput {
 
 @fragment
 fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
-    let font_sample = textureSample(t_font, s_font, in.uv);
-    // Use alpha channel or luminance from font bitmap
-    let alpha = font_sample.a * in.color.a;
-    if (alpha < 0.05) {
+    let tex = textureSample(t_font, s_font, in.uv);
+    let color = tex * in.color;
+    if (color.a < 0.05) {
         discard;
     }
-    return vec4<f32>(in.color.rgb, alpha);
+    return color;
 }
 

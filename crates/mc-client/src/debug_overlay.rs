@@ -36,7 +36,7 @@ pub struct DebugOverlay {
 impl DebugOverlay {
     pub fn new() -> Self {
         Self {
-            enabled: true, // Show F3 overlay by default
+            enabled: false, // Hidden by default, press F3 to toggle
             frame_count: 0,
             accum_time: 0.0,
             current_fps: 60,
@@ -72,7 +72,7 @@ impl DebugOverlay {
         }
 
         let lines = [
-            "Minecraft 1.0.0 (Rust Clean-Room Client)".to_string(),
+            "Minecraft 1.21.4 (Rust Engine)".to_string(),
             format!("FPS: {} ({:.1} ms)", self.current_fps, self.frame_time_ms),
             format!(
                 "XYZ: {:.3} / {:.3} / {:.3}",
@@ -219,16 +219,17 @@ mod tests {
     #[test]
     fn test_debug_overlay_toggle() {
         let mut overlay = DebugOverlay::new();
-        assert!(overlay.enabled);
-        overlay.toggle();
         assert!(!overlay.enabled);
         overlay.toggle();
         assert!(overlay.enabled);
+        overlay.toggle();
+        assert!(!overlay.enabled);
     }
 
     #[test]
     fn test_debug_overlay_mesh_generation() {
-        let overlay = DebugOverlay::new();
+        let mut overlay = DebugOverlay::new();
+        overlay.enabled = true;
         let stats = DebugStats {
             pos: [10.5, 64.0, -25.3],
             chunk_coords: (0, 4, -2),

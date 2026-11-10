@@ -86,6 +86,7 @@ impl NetherGenerator {
                     let density = noise_buf[idx];
 
                     // Vertical gradient: solid near ceiling and floor, hollow in middle
+                    // TODO(verify): Nether height bias curve 1.0 - abs((y - 64)/64)
                     let height_bias = 1.0 - ((y as f64 - 64.0) / 64.0).abs();
                     let final_density = density + (height_bias * 0.5) - 0.2;
 
@@ -111,6 +112,7 @@ impl NetherGenerator {
                 .wrapping_add((chunk_z / 16) as i64 * 123456789),
         );
 
+        // TODO(verify): Nether fortress chunk grid spacing (16 chunks) and 1 in 3 probability
         if (chunk_x % 16 == 0) && (chunk_z % 16 == 0) && rng.next_int_bounded(3) == 0 {
             // Build a nether fortress bridge through this chunk at Y=64
             let bridge_y = 64;
@@ -152,6 +154,7 @@ impl StrongholdGenerator {
 
         for (i, pos) in positions.iter_mut().enumerate() {
             let angle = base_angle + (i as f64 * std::f64::consts::TAU / 3.0);
+            // TODO(verify): Stronghold distance range 640..1152 in Minecraft 1.0
             let dist = 640.0 + rng.next_double() * (1152.0 - 640.0);
             let x = (angle.cos() * dist).round() as f32;
             let z = (angle.sin() * dist).round() as f32;
@@ -248,6 +251,7 @@ impl EndGenerator {
                 let dist_from_center = (wx * wx + wz * wz).sqrt();
 
                 // Main floating island (radius ~60 blocks)
+                // TODO(verify): End central island radius 60.0 and thickness profile
                 if dist_from_center < 60.0 {
                     let island_thickness = 15.0 * (1.0 - (dist_from_center / 60.0)).sqrt();
                     let min_y = (60.0 - island_thickness).round() as usize;
@@ -273,6 +277,7 @@ impl EndGenerator {
 
     /// Fixed ring of obsidian pillars in The End
     fn generate_pillars(chunk: &mut Chunk, chunk_x: i32, chunk_z: i32) {
+        // TODO(verify): Ring radius 42.0 and 10 obsidian pillars in Minecraft 1.0
         let pillar_radius: f32 = 42.0;
         let mut pillar_angles = [0.0f32; 10];
         for (i, angle) in pillar_angles.iter_mut().enumerate() {

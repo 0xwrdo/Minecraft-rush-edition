@@ -30,6 +30,8 @@ pub struct LevelData {
     pub rain_time: i32,
     pub thundering: bool,
     pub thunder_time: i32,
+    pub game_type: i32,
+    pub hardcore: i8,
 }
 
 impl Default for LevelData {
@@ -52,6 +54,8 @@ impl Default for LevelData {
             rain_time: 12000,
             thundering: false,
             thunder_time: 12000,
+            game_type: 0,
+            hardcore: 0,
         }
     }
 }
@@ -90,6 +94,8 @@ impl LevelData {
             NbtTag::Byte(if self.thundering { 1 } else { 0 }),
         );
         data_map.insert("thunderTime".to_string(), NbtTag::Int(self.thunder_time));
+        data_map.insert("GameType".to_string(), NbtTag::Int(self.game_type));
+        data_map.insert("hardcore".to_string(), NbtTag::Byte(self.hardcore));
 
         let mut root_map = HashMap::new();
         root_map.insert("Data".to_string(), NbtTag::Compound(data_map));
@@ -161,6 +167,8 @@ impl LevelData {
             rain_time: get_int("rainTime"),
             thundering: get_byte("thundering") != 0,
             thunder_time: get_int("thunderTime"),
+            game_type: get_int("GameType"),
+            hardcore: get_byte("hardcore"),
         })
     }
 

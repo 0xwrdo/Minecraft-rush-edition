@@ -34,6 +34,7 @@ pub struct LightRemovalNode {
 /// Calculate Minecraft 1.0 sky brightness factor (0.2 to 1.0) from world time (0..24000).
 pub fn calculate_sky_brightness(world_time: i64) -> f32 {
     let time = (world_time % DAY_CYCLE_TICKS + DAY_CYCLE_TICKS) % DAY_CYCLE_TICKS;
+    // TODO(verify): Exact dawn/dusk tick boundaries (12000, 13800, 22200) and night ambient factor 0.2
     // 0 to 12000 is day
     // 12000 to 13800 is dusk
     // 13800 to 22200 is night
@@ -316,5 +317,25 @@ mod tests {
         assert_eq!(chunk.get_block_light(8, 64, 9), 0);
         assert_eq!(chunk.get_block_light(8, 64, 10), 0);
         assert_eq!(chunk.get_block_light(8, 64, 11), 0);
+    }
+
+    #[test]
+    fn test_open_sky_receives_sky_light_15() {
+        let registry = BlockRegistry::default();
+        let mut chunk = Chunk::new(0, 0);
+
+        // Put stone at y=60 so y=61..127 is open sky air
+        for y in 0..=60 {
+            chunk.set_block(4, y, 4, BlockId::STONE);
+        }
+
+        LightingEngine::init_chunk_skylight(&mut chunk, &registry);
+
+        // Air directly under open sky must have sky light 15
+        assert_eq!(chunk.get_sky_light(4, 127, 4), 15);
+        assert_eq!(chunk.get_sky_light(4, 61, 4), 15);
+        // Inside solid stone, sky light is 0
+        assert_eq!(chunk.get_sky_light(4, 60, 4), 0);
+        assert_eq!(chunk.get_sky_light(4, 0, 4), 0);
     }
 }

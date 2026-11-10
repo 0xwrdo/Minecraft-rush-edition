@@ -16,6 +16,10 @@ pub mod chunk_manager;
 pub mod debug_overlay;
 pub mod input;
 pub mod mesh;
+pub mod options;
+pub mod player_model;
 pub mod renderer;
+pub mod ui;
 
 pub use app::App;
+pub use options::*;

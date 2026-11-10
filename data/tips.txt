@@ -1,0 +1,26 @@
+Never dig straight down; lava or a deep cavern may lurk beneath!
+Always carry a water bucket to cushion high falls and neutralize lava.
+Torches placed on walls keep hostile mobs from spawning in dark caves.
+Craft wooden planks from logs in your 2x2 inventory crafting grid.
+Cook raw meat in a furnace to restore more hunger points and health.
+Listen closely for dripping water or mob sounds to locate hidden caves.
+Shift-clicking items moves whole stacks quickly between inventories.
+Smelt cobblestone in a furnace to restore it to clean smooth stone.
+Craft a bed from 3 wool and 3 wooden planks to set your spawn point.
+Diamonds are most commonly found deep underground below level 16.
+Use a pickaxe to mine stone and ores; using bare hands yields no drops!
+Right-click on a furnace or crafting table to open its container menu.
+A full hunger bar allows natural health regeneration over time.
+Keep a spare set of tools and weapons in a chest at your main base.
+Crouch with the Sneak key to prevent yourself from falling off edges.
+Place torches along the right side of caves to easily retrace your steps.
+Different tool materials have varying durability: diamond lasts longest!
+Iron ore must be smelted in a furnace before it can be used for tools.
+Monsters burn in direct sunlight when morning arrives in the overworld.
+Build a shelter before nightfall to survive hostile monster encounters.
+Farming wheat with seeds gives you a reliable food source for survival.
+Gold tools mine blocks fastest, but have very low durability.
+Look for redstone dust near bedrock to power contraptions and doors.
+Charcoal can be crafted by smelting tree logs in a furnace.
+Keep your eyes on the air bubble meter when exploring underwater depths!
+

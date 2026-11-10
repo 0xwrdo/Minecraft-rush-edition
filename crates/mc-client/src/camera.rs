@@ -2,6 +2,24 @@
 
 use glam::{Mat4, Vec3, Vec4};
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
+pub enum Perspective {
+    #[default]
+    FirstPerson,
+    ThirdPersonBack,
+    ThirdPersonFront,
+}
+
+impl Perspective {
+    pub fn cycle(self) -> Self {
+        match self {
+            Perspective::FirstPerson => Perspective::ThirdPersonBack,
+            Perspective::ThirdPersonBack => Perspective::ThirdPersonFront,
+            Perspective::ThirdPersonFront => Perspective::FirstPerson,
+        }
+    }
+}
+
 pub struct Camera {
     pub position: Vec3,
     pub yaw: f32,   // in radians
@@ -10,6 +28,7 @@ pub struct Camera {
     pub z_near: f32,
     pub z_far: f32,
     pub aspect: f32,
+    pub perspective: Perspective,
 }
 
 impl Camera {
@@ -22,6 +41,7 @@ impl Camera {
             z_near: 0.1,
             z_far: 1000.0,
             aspect,
+            perspective: Perspective::FirstPerson,
         }
     }
 
@@ -44,7 +64,17 @@ impl Camera {
     }
 
     pub fn view_matrix(&self) -> Mat4 {
-        Mat4::look_to_rh(self.position, self.forward(), Vec3::Y)
+        match self.perspective {
+            Perspective::FirstPerson => Mat4::look_to_rh(self.position, self.forward(), Vec3::Y),
+            Perspective::ThirdPersonBack => {
+                let cam_pos = self.position - self.forward() * 3.8;
+                Mat4::look_to_rh(cam_pos, self.forward(), Vec3::Y)
+            }
+            Perspective::ThirdPersonFront => {
+                let cam_pos = self.position + self.forward() * 3.8;
+                Mat4::look_to_rh(cam_pos, -self.forward(), Vec3::Y)
+            }
+        }
     }
 
     pub fn projection_matrix(&self) -> Mat4 {

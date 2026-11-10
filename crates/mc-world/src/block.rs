@@ -27,10 +27,16 @@ impl BlockId {
     pub const LOG: Self = Self(17);
     pub const LEAVES: Self = Self(18);
     pub const GLASS: Self = Self(20);
+    pub const LAPIS_ORE: Self = Self(21);
     pub const SANDSTONE: Self = Self(24);
     pub const OBSIDIAN: Self = Self(49);
     pub const TORCH: Self = Self(50);
+    pub const CHEST: Self = Self(54);
     pub const DIAMOND_ORE: Self = Self(56);
+    pub const CRAFTING_TABLE: Self = Self(58);
+    pub const FURNACE: Self = Self(61);
+    pub const LIT_FURNACE: Self = Self(62);
+    pub const LADDER: Self = Self(65);
     pub const REDSTONE_ORE: Self = Self(73);
     pub const SNOW_LAYER: Self = Self(78);
     pub const ICE: Self = Self(79);
@@ -38,7 +44,6 @@ impl BlockId {
     pub const CLAY: Self = Self(82);
     pub const GLOWSTONE: Self = Self(89);
     pub const MYCELIUM: Self = Self(110);
-    pub const LADDER: Self = Self(65);
 
     // Redstone Components
     pub const DISPENSER: Self = Self(23);
@@ -349,6 +354,18 @@ impl BlockRegistry {
                 false,
                 0.3,
                 false,
+                0.6,
+                false,
+            ),
+            (
+                BlockId::LAPIS_ORE,
+                "lapis_ore",
+                true,
+                15,
+                0,
+                false,
+                3.0,
+                true,
                 0.6,
                 false,
             ),

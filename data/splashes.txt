@@ -1,0 +1,38 @@
+100% pure Rust!
+Clean-room engineered!
+No proprietary assets!
+Chunk borders carved!
+Deterministic RNG!
+Watch out for creepers!
+20 ticks per second!
+WGPU accelerated!
+Voxel paradise!
+Crafting since 2011!
+Redstone circuits ready!
+Mining deep underground!
+Beware of the Nether!
+Java Edition 1.0 nostalgia!
+Punch trees, get wood!
+Never dig straight down!
+A* pathfinding included!
+Seed: 42 or 12345?
+Now with zero unsafe blocks!
+Infinite terrain awaiting!
+Smooth lighting enabled!
+Skeletons never miss!
+Don't look at the Endermen!
+Diamonds at y=11!
+Sound of sizzling lava!
+Brewing awkward potions!
+Sleep through the night!
+F3 for debug coordinates!
+Craft a diamond pickaxe!
+Explore the caves!
+Building blocks of fun!
+All procedural textures!
+Parabolic 5x5 biome blending!
+Cubic chunks of creativity!
+As seen on GitHub!
+Stack size: 64!
+Drop shadow enabled!
+

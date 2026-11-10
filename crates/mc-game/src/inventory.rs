@@ -24,6 +24,9 @@ pub struct Inventory {
     /// - 3: Boots
     pub armor: [ItemStack; ARMOR_SLOTS_COUNT],
 
+    /// Off-hand equipped item slot (modern 1.9+ shield / totem / item)
+    pub offhand: ItemStack,
+
     /// Mouse cursor / held floating stack during inventory manipulation
     pub cursor: ItemStack,
 
@@ -36,6 +39,7 @@ impl Inventory {
         Self {
             main: [ItemStack::EMPTY; MAIN_INVENTORY_SIZE],
             armor: [ItemStack::EMPTY; ARMOR_SLOTS_COUNT],
+            offhand: ItemStack::EMPTY,
             cursor: ItemStack::EMPTY,
             selected_hotbar_slot: 0,
         }

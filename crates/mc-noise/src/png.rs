@@ -110,3 +110,66 @@ pub fn save_grayscale_png(path: &Path, width: u32, height: u32, pixels: &[u8]) -
     file.flush()?;
     Ok(())
 }
+
+/// Save an 8-bit RGB image buffer (3 bytes per pixel: R, G, B) to a PNG file.
+pub fn save_rgb_png(path: &Path, width: u32, height: u32, pixels: &[u8]) -> io::Result<()> {
+    assert_eq!(
+        pixels.len(),
+        (width * height * 3) as usize,
+        "Pixel buffer size must match width * height * 3"
+    );
+
+    let mut file = File::create(path)?;
+
+    // 1. PNG Signature
+    file.write_all(&[137, 80, 78, 71, 13, 10, 26, 10])?;
+
+    // 2. IHDR Chunk (13 bytes)
+    let mut ihdr = Vec::with_capacity(13);
+    ihdr.extend_from_slice(&width.to_be_bytes());
+    ihdr.extend_from_slice(&height.to_be_bytes());
+    ihdr.push(8); // Bit depth: 8
+    ihdr.push(2); // Color type: 2 (RGB)
+    ihdr.push(0); // Compression method: 0 (Deflate)
+    ihdr.push(0); // Filter method: 0
+    ihdr.push(0); // Interlace: 0 (None)
+    write_chunk(&mut file, b"IHDR", &ihdr)?;
+
+    // 3. Raw Scanline Data (Each row prefixed with filter byte 0 = None)
+    let stride = (width * 3) as usize;
+    let row_len = stride + 1;
+    let mut raw_data = Vec::with_capacity(row_len * height as usize);
+    for y in 0..height as usize {
+        raw_data.push(0); // Filter byte: None
+        let row_start = y * stride;
+        let row_end = row_start + stride;
+        raw_data.extend_from_slice(&pixels[row_start..row_end]);
+    }
+
+    // 4. Wrap raw data in RFC 1950 Zlib container with uncompressed RFC 1951 Deflate blocks
+    let mut idat = Vec::new();
+    idat.push(0x78); // CMF: Deflate, 32K window
+    idat.push(0x01); // FLG: Check bits, no preset dictionary
+
+    let chunks = raw_data.chunks(65535).collect::<Vec<_>>();
+    for (i, chunk) in chunks.iter().enumerate() {
+        let is_last = i == chunks.len() - 1;
+        idat.push(if is_last { 0x01 } else { 0x00 });
+        let len = chunk.len() as u16;
+        let nlen = !len;
+        idat.extend_from_slice(&len.to_le_bytes());
+        idat.extend_from_slice(&nlen.to_le_bytes());
+        idat.extend_from_slice(chunk);
+    }
+
+    let checksum = adler32(&raw_data);
+    idat.extend_from_slice(&checksum.to_be_bytes());
+
+    write_chunk(&mut file, b"IDAT", &idat)?;
+
+    // 5. IEND Chunk
+    write_chunk(&mut file, b"IEND", &[])?;
+
+    file.flush()?;
+    Ok(())
+}
